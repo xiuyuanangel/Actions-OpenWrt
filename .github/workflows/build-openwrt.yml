@@ -62,7 +62,7 @@ jobs:
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
     
     - name: Load mi_r3
-      run: cd openwrttarget/linux/ramips/dts && wget https://github.com/x-wrt/x-wrt/blob/master/target/linux/ramips/dts/mt7620a_xiaomi_miwifi-r3.dts
+      run: cd openwrt/target/linux/ramips/dts && wget https://github.com/x-wrt/x-wrt/blob/master/target/linux/ramips/dts/mt7620a_xiaomi_miwifi-r3.dts
     
     - name: Load custom feeds
       run: |
