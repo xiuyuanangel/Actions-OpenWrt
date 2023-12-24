@@ -65,7 +65,27 @@ jobs:
       run: cd openwrt/target/linux/ramips/dts && wget https://github.com/x-wrt/x-wrt/blob/master/target/linux/ramips/dts/mt7620a_xiaomi_miwifi-r3.dts
     
     - name: download mir3_mk
-      run: cd openwrt/target/linux/ramips/image && wget https://github.com/x-wrt/x-wrt/blob/master/target/linux/ramips/image/mt7620.mk
+      run: |
+        #cd openwrt/target/linux/ramips/image && wget https://github.com/x-wrt/x-wrt/blob/master/target/linux/ramips/image/mt7620.mk
+        cd openwrt/target/linux/ramips/image
+        echo '' >> mt7620.mk
+        echo 'define Device/xiaomi_miwifi-r3' >> mt7620.mk
+        echo '  DTS := MIWIFI-R3' >> mt7620.mk
+        echo '  BLOCKSIZE := 128k' >> mt7620.mk
+        echo '  PAGESIZE := 2048' >> mt7620.mk
+        echo '  KERNEL_SIZE := 4096k' >> mt7620.mk
+        echo '  KERNEL := $(KERNEL_DTB) | uImage lzma' >> mt7620.mk
+        echo '  IMAGE_SIZE := 32768k' >> mt7620.mk
+        echo '  UBINIZE_OPTS := -E 5' >> mt7620.mk
+        echo '  IMAGES := kernel1.bin rootfs0.bin sysupgrade.tar pb-boot.bin' >> mt7620.mk
+        echo '  IMAGE/kernel1.bin := append-kernel | check-size $$$$(KERNEL_SIZE)' >> mt7620.mk
+        echo '  IMAGE/rootfs0.bin := append-ubi | check-size $$$$(IMAGE_SIZE)' >> mt7620.mk
+        echo '  IMAGE/sysupgrade.tar := sysupgrade-tar | append-metadata' >> mt7620.mk
+        echo '  IMAGE/pb-boot.bin := append-kernel | pad-to $$(KERNEL_SIZE) | append-kernel | pad-to $$(KERNEL_SIZE) | append-ubi | check-size $$$$(IMAGE_SIZE)' >> mt7620.mk
+        echo '  DEVICE_TITLE := Xiaomi Mi Router R3' >> mt7620.mk
+        echo '  DEVICE_PACKAGES := kmod-usb2 kmod-usb-ohci kmod-mt76x2 uboot-envtools' >> mt7620.mk
+        echo 'endef' >> mt7620.mk
+        echo 'TARGET_DEVICES += xiaomi_miwifi-r3' >> mt7620.mk
     
     - name: Load custom feeds
       run: |
