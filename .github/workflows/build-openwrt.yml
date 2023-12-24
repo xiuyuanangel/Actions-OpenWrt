@@ -61,8 +61,11 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
     
-    - name: Load mi_r3
+    - name: download mi_r3_dts
       run: cd openwrt/target/linux/ramips/dts && wget https://github.com/x-wrt/x-wrt/blob/master/target/linux/ramips/dts/mt7620a_xiaomi_miwifi-r3.dts
+    
+    - name: download mir3_mk
+      run: cd openwrt/target/linux/ramips/image && wget https://github.com/x-wrt/x-wrt/blob/master/target/linux/ramips/image/mt7620.mk
     
     - name: Load custom feeds
       run: |
